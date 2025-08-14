@@ -1,19 +1,32 @@
-import React from 'react';
 
-function App() {
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "./redux/productSlice";
+
+function Home() {
+  const dispatch = useDispatch();
+  const { items, status } = useSelector((state) => state.products);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      {/* This div uses Tailwind classes for styling */}
-      <div className="bg-blue-600 text-white p-8 rounded-lg shadow-xl text-center max-w-sm w-full">
-        <h1 className="text-3xl font-bold mb-4">
-          Tailwind is working!
-        </h1>
-        <p>
-          If you can see this box styled correctly, your setup is complete.
-        </p>
-      </div>
+    <div>
+      <h1>Home</h1>
+      {status === "loading" && <p>Loading...</p>}
+      {status === "succeeded" && <pre>{JSON.stringify(items, null, 2)}</pre>}
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </Router>
+  );
+}
