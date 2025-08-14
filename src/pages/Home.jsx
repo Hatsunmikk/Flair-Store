@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/productSlice";
 import { addToCart, removeFromCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -37,7 +37,25 @@ export default function Home() {
 
   return (
     <div className="home-container" style={{ padding: "20px" }}>
-      <h1 style={{ marginBottom: "20px" }}>Products</h1>
+      {/* Header with navigation links */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+        }}
+      >
+        <h1>Products</h1>
+        <div style={{ display: "flex", gap: "20px" }}>
+          <Link to="/cart" style={{ textDecoration: "none", fontWeight: "bold" }}>
+            Cart ({cartItems.length})
+          </Link>
+          <Link to="/wishlist" style={{ textDecoration: "none", fontWeight: "bold" }}>
+            Wishlist ({wishlistItems.length})
+          </Link>
+        </div>
+      </div>
 
       {status === "loading" && <p>Loading...</p>}
       {status === "failed" && <p style={{ color: "red" }}>{error}</p>}
@@ -66,7 +84,6 @@ export default function Home() {
                   textAlign: "center",
                 }}
               >
-                {/* Link to Product Details page */}
                 <Link to={`/product/${product.id}`}>
                   <img
                     src={product.image}
