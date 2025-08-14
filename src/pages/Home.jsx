@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/productSlice";
+import { addToCart } from "../redux/cartSlice";
+import { addToWishlist } from "../redux/wishlistSlice";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -11,6 +13,14 @@ export default function Home() {
       dispatch(fetchProducts());
     }
   }, [dispatch, status]);
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
+
+  const handleAddToWishlist = (product) => {
+    dispatch(addToWishlist(product));
+  };
 
   return (
     <div className="home-container" style={{ padding: "20px" }}>
@@ -42,7 +52,11 @@ export default function Home() {
               <img
                 src={product.image}
                 alt={product.title}
-                style={{ height: "150px", objectFit: "contain", marginBottom: "10px" }}
+                style={{
+                  height: "150px",
+                  objectFit: "contain",
+                  marginBottom: "10px",
+                }}
               />
               <h3 style={{ fontSize: "1rem", marginBottom: "10px" }}>
                 {product.title.length > 40
@@ -52,18 +66,34 @@ export default function Home() {
               <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
                 ${product.price}
               </p>
-              <button
-                style={{
-                  backgroundColor: "#4CAF50",
-                  color: "white",
-                  border: "none",
-                  padding: "10px 15px",
-                  borderRadius: "5px",
-                  cursor: "pointer",
-                }}
-              >
-                Add to Cart
-              </button>
+              <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  style={{
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 15px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Add to Cart
+                </button>
+                <button
+                  onClick={() => handleAddToWishlist(product)}
+                  style={{
+                    backgroundColor: "#FF4081",
+                    color: "white",
+                    border: "none",
+                    padding: "10px 15px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Wishlist
+                </button>
+              </div>
             </div>
           ))}
         </div>
