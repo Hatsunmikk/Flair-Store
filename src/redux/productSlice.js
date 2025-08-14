@@ -1,13 +1,14 @@
 // src/redux/productSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async thunk to fetch products
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
     const response = await fetch("https://fakestoreapi.com/products");
-    const data = await response.json();
-    return data;
+    if (!response.ok) {
+      throw new Error("Failed to fetch products");
+    }
+    return await response.json();
   }
 );
 
@@ -15,7 +16,7 @@ const productSlice = createSlice({
   name: "products",
   initialState: {
     items: [],
-    status: "idle",
+    status: "idle", // idle | loading | succeeded | failed
     error: null,
   },
   reducers: {},
