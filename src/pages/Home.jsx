@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/productSlice";
 import { addToCart, removeFromCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -65,23 +66,28 @@ export default function Home() {
                   textAlign: "center",
                 }}
               >
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  style={{
-                    height: "150px",
-                    objectFit: "contain",
-                    marginBottom: "10px",
-                  }}
-                />
-                <h3 style={{ fontSize: "1rem", marginBottom: "10px" }}>
-                  {product.title.length > 40
-                    ? product.title.slice(0, 40) + "..."
-                    : product.title}
-                </h3>
+                {/* Link to Product Details page */}
+                <Link to={`/product/${product.id}`}>
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    style={{
+                      height: "150px",
+                      objectFit: "contain",
+                      marginBottom: "10px",
+                    }}
+                  />
+                  <h3 style={{ fontSize: "1rem", marginBottom: "10px" }}>
+                    {product.title.length > 40
+                      ? product.title.slice(0, 40) + "..."
+                      : product.title}
+                  </h3>
+                </Link>
+
                 <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
                   ${product.price}
                 </p>
+
                 <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
                   <button
                     onClick={() => handleCartToggle(product)}
