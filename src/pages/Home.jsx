@@ -19,118 +19,94 @@ export default function Home() {
 
   const handleCartToggle = (product) => {
     const inCart = cartItems.some((item) => item.id === product.id);
-    if (inCart) {
-      dispatch(removeFromCart(product.id));
-    } else {
-      dispatch(addToCart(product));
-    }
+    inCart
+      ? dispatch(removeFromCart(product.id))
+      : dispatch(addToCart(product));
   };
 
   const handleWishlistToggle = (product) => {
     const inWishlist = wishlistItems.some((item) => item.id === product.id);
-    if (inWishlist) {
-      dispatch(removeFromWishlist(product.id));
-    } else {
-      dispatch(addToWishlist(product));
-    }
+    inWishlist
+      ? dispatch(removeFromWishlist(product.id))
+      : dispatch(addToWishlist(product));
   };
 
   return (
-    <div className="home-container" style={{ padding: "20px" }}>
-      {/* Header with navigation links */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-        }}
-      >
-        <h1>Products</h1>
-        <div style={{ display: "flex", gap: "20px" }}>
-          <Link to="/cart" style={{ textDecoration: "none", fontWeight: "bold" }}>
+    <div className="min-h-screen bg-gray-50 px-6 py-8">
+      {/* Page Header */}
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Flair Store</h1>
+        <div className="flex gap-6">
+          <Link
+            to="/cart"
+            className="font-semibold text-gray-700 hover:text-blue-600 transition-colors"
+          >
             Cart ({cartItems.length})
           </Link>
-          <Link to="/wishlist" style={{ textDecoration: "none", fontWeight: "bold" }}>
+          <Link
+            to="/wishlist"
+            className="font-semibold text-gray-700 hover:text-pink-600 transition-colors"
+          >
             Wishlist ({wishlistItems.length})
           </Link>
         </div>
       </div>
 
-      {status === "loading" && <p>Loading...</p>}
-      {status === "failed" && <p style={{ color: "red" }}>{error}</p>}
+      {/* Loading / Error */}
+      {status === "loading" && <p className="text-gray-600">Loading...</p>}
+      {status === "failed" && <p className="text-red-500">{error}</p>}
 
+      {/* Products Grid */}
       {status === "succeeded" && (
-        <div
-          className="product-grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: "20px",
-          }}
-        >
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {items.map((product) => {
             const inCart = cartItems.some((item) => item.id === product.id);
-            const inWishlist = wishlistItems.some((item) => item.id === product.id);
+            const inWishlist = wishlistItems.some(
+              (item) => item.id === product.id
+            );
 
             return (
               <div
                 key={product.id}
-                className="product-card"
-                style={{
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  padding: "15px",
-                  textAlign: "center",
-                }}
+                className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex flex-col text-center hover:shadow-md transition-shadow"
               >
-                <Link to={`/product/${product.id}`}>
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    style={{
-                      height: "150px",
-                      objectFit: "contain",
-                      marginBottom: "10px",
-                    }}
-                  />
-                  <h3 style={{ fontSize: "1rem", marginBottom: "10px" }}>
-                    {product.title.length > 40
-                      ? product.title.slice(0, 40) + "..."
-                      : product.title}
+                <Link to={`/product/${product.id}`} className="flex-1 flex flex-col">
+                  <div className="h-40 flex items-center justify-center mb-4">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="max-h-40 object-contain"
+                    />
+                  </div>
+                  <h3 className="text-sm font-medium text-gray-800 line-clamp-2 mb-2">
+                    {product.title}
                   </h3>
                 </Link>
 
-                <p style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                <p className="font-bold text-lg text-gray-900 mb-4">
                   ${product.price}
                 </p>
 
-                <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                <div className="flex gap-3 justify-center">
                   <button
                     onClick={() => handleCartToggle(product)}
-                    style={{
-                      backgroundColor: inCart ? "#f44336" : "#4CAF50",
-                      color: "white",
-                      border: "none",
-                      padding: "10px 15px",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
+                    className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
+                      inCart
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-green-500 hover:bg-green-600"
+                    }`}
                   >
                     {inCart ? "Remove from Cart" : "Add to Cart"}
                   </button>
                   <button
                     onClick={() => handleWishlistToggle(product)}
-                    style={{
-                      backgroundColor: inWishlist ? "#f44336" : "#FF4081",
-                      color: "white",
-                      border: "none",
-                      padding: "10px 15px",
-                      borderRadius: "5px",
-                      cursor: "pointer",
-                    }}
+                    className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
+                      inWishlist
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-pink-500 hover:bg-pink-600"
+                    }`}
                   >
-                    {inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+                    {inWishlist ? "Remove" : "Wishlist"}
                   </button>
                 </div>
               </div>
