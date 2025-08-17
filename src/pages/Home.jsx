@@ -150,18 +150,18 @@ export default function Home() {
                         <button
                           onClick={() => handleCartToggle(product)}
                           className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
-                            inCart ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
+                            inCart ? "bg-green-500 hover:bg-green-600" : "bg-pink-500 hover:bg-pink-600"
                           }`}
                         >
-                          {inCart ? "Remove from Cart" : "Add to Cart"}
+                          {inCart ? "Go to Cart" : "Add to Cart"}
                         </button>
                         <button
                           onClick={() => handleWishlistToggle(product)}
                           className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
-                            inWishlist ? "bg-red-500 hover:bg-red-600" : "bg-pink-500 hover:bg-pink-600"
+                            inWishlist ? "bg-green-500 hover:bg-green-600" : "bg-pink-500 hover:bg-pink-600"
                           }`}
                         >
-                          {inWishlist ? "Remove" : "Wishlist"}
+                          {inWishlist ? "Go to Wishlist" : "Add to Wishlist"}
                         </button>
                       </div>
                     </motion.div>
