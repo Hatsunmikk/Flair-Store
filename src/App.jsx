@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
@@ -28,6 +31,17 @@ export default function App() {
     localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
   }, [wishlistItems]);
 
+  // ✅ Notification helpers
+  const handleAddToCart = (product) => {
+    setCartItems((prev) => [...prev, product]);
+    toast.success(`${product.name} added to Cart 🛒`);
+  };
+
+  const handleAddToWishlist = (product) => {
+    setWishlistItems((prev) => [...prev, product]);
+    toast.info(`${product.name} added to Wishlist ❤️`);
+  };
+
   return (
     <Router>
       <Header
@@ -38,14 +52,19 @@ export default function App() {
         <Routes>
           <Route
             path="/"
-            element={<Home setCartItems={setCartItems} setWishlistItems={setWishlistItems} />}
+            element={
+              <Home
+                onAddToCart={handleAddToCart}
+                onAddToWishlist={handleAddToWishlist}
+              />
+            }
           />
           <Route
             path="/product/:id"
             element={
               <ProductDetails
-                setCartItems={setCartItems}
-                setWishlistItems={setWishlistItems}
+                onAddToCart={handleAddToCart}
+                onAddToWishlist={handleAddToWishlist}
               />
             }
           />
@@ -66,6 +85,7 @@ export default function App() {
         </Routes>
       </AnimatePresence>
       <Footer />
+      <ToastContainer position="bottom-left" autoClose={3000} />
     </Router>
   );
 }

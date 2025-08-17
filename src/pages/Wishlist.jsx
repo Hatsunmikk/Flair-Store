@@ -3,13 +3,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeFromWishlist } from "../redux/wishlistSlice";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
+import { addNotification } from "../redux/notificationSlice";
 
 export default function Wishlist() {
   const wishlistItems = useSelector((state) => state.wishlist);
   const dispatch = useDispatch();
 
-  const handleRemove = (id) => {
+  const handleRemove = (id, title) => {
     dispatch(removeFromWishlist(id));
+    const message = `Removed ${title} from wishlist.`;
+    dispatch(addNotification(message));
+    toast.info(message);
   };
 
   if (wishlistItems.length === 0) {
@@ -18,7 +23,9 @@ export default function Wishlist() {
         <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           Your Wishlist is empty
         </motion.h2>
-        <Link to="/" style={{ color: "#FF4081" }}>Go back to Home</Link>
+        <Link to="/" style={{ color: "#FF4081" }}>
+          Go back to Home
+        </Link>
       </div>
     );
   }
@@ -28,7 +35,14 @@ export default function Wishlist() {
       <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         My Wishlist
       </motion.h2>
-      <Link to="/" style={{ display: "inline-block", marginBottom: "20px", color: "#FF4081" }}>
+      <Link
+        to="/"
+        style={{
+          display: "inline-block",
+          marginBottom: "20px",
+          color: "#FF4081",
+        }}
+      >
         &larr; Back to Home
       </Link>
       <div
@@ -58,7 +72,11 @@ export default function Wishlist() {
                 <img
                   src={product.image}
                   alt={product.title}
-                  style={{ height: "150px", objectFit: "contain", marginBottom: "10px" }}
+                  style={{
+                    height: "150px",
+                    objectFit: "contain",
+                    marginBottom: "10px",
+                  }}
                 />
                 <h3>
                   {product.title.length > 40
@@ -68,7 +86,7 @@ export default function Wishlist() {
               </Link>
               <p style={{ fontWeight: "bold" }}>${product.price}</p>
               <button
-                onClick={() => handleRemove(product.id)}
+                onClick={() => handleRemove(product.id, product.title)}
                 style={{
                   backgroundColor: "#f44336",
                   color: "white",

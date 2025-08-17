@@ -8,6 +8,8 @@ import {
 } from "../redux/cartSlice";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
+import { addNotification } from "../redux/notificationSlice";
 
 export default function Cart() {
   const cartItems = useSelector((state) => state.cart.items);
@@ -18,13 +20,43 @@ export default function Cart() {
     0
   );
 
+  const handleRemove = (id, title) => {
+    dispatch(removeFromCart(id));
+    const message = `Removed ${title} from cart.`;
+    dispatch(addNotification(message));
+    toast.info(message);
+  };
+
+  const handleIncrease = (id, title) => {
+    dispatch(increaseQuantity(id));
+    const message = `Increased quantity of ${title}.`;
+    dispatch(addNotification(message));
+    toast.success(message);
+  };
+
+  const handleDecrease = (id, title) => {
+    dispatch(decreaseQuantity(id));
+    const message = `Decreased quantity of ${title}.`;
+    dispatch(addNotification(message));
+    toast.info(message);
+  };
+
+  const handleClear = () => {
+    dispatch(clearCart());
+    const message = "Cleared cart.";
+    dispatch(addNotification(message));
+    toast.warn(message);
+  };
+
   if (cartItems.length === 0) {
     return (
       <div style={{ padding: "20px", textAlign: "center" }}>
         <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           Your Cart is Empty
         </motion.h2>
-        <Link to="/" style={{ color: "#FF4081" }}>Go back to Home</Link>
+        <Link to="/" style={{ color: "#FF4081" }}>
+          Go back to Home
+        </Link>
       </div>
     );
   }
@@ -34,7 +66,14 @@ export default function Cart() {
       <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         Your Cart
       </motion.h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "15px",
+          marginTop: "20px",
+        }}
+      >
         <AnimatePresence>
           {cartItems.map((item) => (
             <motion.div
@@ -61,14 +100,20 @@ export default function Cart() {
               <div style={{ flex: 1 }}>
                 <h4>{item.title}</h4>
                 <p>${item.price}</p>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                  <button onClick={() => dispatch(decreaseQuantity(item.id))}>-</button>
+                <div
+                  style={{ display: "flex", gap: "10px", alignItems: "center" }}
+                >
+                  <button onClick={() => handleDecrease(item.id, item.title)}>
+                    -
+                  </button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => dispatch(increaseQuantity(item.id))}>+</button>
+                  <button onClick={() => handleIncrease(item.id, item.title)}>
+                    +
+                  </button>
                 </div>
               </div>
               <button
-                onClick={() => dispatch(removeFromCart(item.id))}
+                onClick={() => handleRemove(item.id, item.title)}
                 style={{
                   backgroundColor: "#f44336",
                   color: "white",
@@ -92,7 +137,7 @@ export default function Cart() {
         Total: ${totalPrice.toFixed(2)}
       </motion.h3>
       <button
-        onClick={() => dispatch(clearCart())}
+        onClick={handleClear}
         style={{
           marginTop: "10px",
           backgroundColor: "#FF4081",

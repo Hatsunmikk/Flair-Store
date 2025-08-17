@@ -4,7 +4,9 @@ import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
+import { addNotification } from "../redux/notificationSlice"; // ✅ import notifications
 import { motion } from "framer-motion";
+import { toast } from "react-toastify"; // ✅ assuming you use react-toastify
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -41,13 +43,47 @@ export default function ProductDetails() {
   const inWishlist = wishlistItems.some((item) => item.id === product.id);
 
   const handleCartToggle = () => {
-    inCart ? dispatch(removeFromCart(product.id)) : dispatch(addToCart(product));
+    if (inCart) {
+      dispatch(removeFromCart(product.id));
+      dispatch(addNotification({
+        id: Date.now(),
+        type: "cart",
+        message: `${product.title} removed from Cart`,
+        timestamp: new Date().toISOString()
+      }));
+      toast.info(`${product.title} removed from Cart`, { position: "bottom-left" });
+    } else {
+      dispatch(addToCart(product));
+      dispatch(addNotification({
+        id: Date.now(),
+        type: "cart",
+        message: `${product.title} added to Cart`,
+        timestamp: new Date().toISOString()
+      }));
+      toast.success(`${product.title} added to Cart`, { position: "bottom-left" });
+    }
   };
 
   const handleWishlistToggle = () => {
-    inWishlist
-      ? dispatch(removeFromWishlist(product.id))
-      : dispatch(addToWishlist(product));
+    if (inWishlist) {
+      dispatch(removeFromWishlist(product.id));
+      dispatch(addNotification({
+        id: Date.now(),
+        type: "wishlist",
+        message: `${product.title} removed from Wishlist`,
+        timestamp: new Date().toISOString()
+      }));
+      toast.info(`${product.title} removed from Wishlist`, { position: "bottom-left" });
+    } else {
+      dispatch(addToWishlist(product));
+      dispatch(addNotification({
+        id: Date.now(),
+        type: "wishlist",
+        message: `${product.title} added to Wishlist`,
+        timestamp: new Date().toISOString()
+      }));
+      toast.success(`${product.title} added to Wishlist`, { position: "bottom-left" });
+    }
   };
 
   return (

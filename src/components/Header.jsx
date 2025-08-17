@@ -3,13 +3,15 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchTerm, clearSearchTerm } from "../redux/searchSlice";
-import { FiSearch, FiBell, FiLogIn, FiHeart, FiShoppingCart, FiX } from "react-icons/fi";
+import { FiSearch, FiLogIn, FiHeart, FiShoppingCart, FiX } from "react-icons/fi";
 
 export default function Header() {
   const dispatch = useDispatch();
   const cartCount = useSelector((state) => state.cart?.items?.length || 0);
   const wishlistCount = useSelector((state) =>
-    Array.isArray(state.wishlist) ? state.wishlist.length : state.wishlist?.items?.length || 0
+    Array.isArray(state.wishlist)
+      ? state.wishlist.length
+      : state.wishlist?.items?.length || 0
   );
   const search = useSelector((state) => state.search.term);
 
@@ -26,7 +28,10 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-16 flex items-center justify-between gap-4">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-extrabold tracking-tight text-gray-900">
+          <Link
+            to="/"
+            className="text-2xl font-extrabold tracking-tight text-gray-900"
+          >
             Flair Store
           </Link>
 
@@ -64,9 +69,12 @@ export default function Header() {
 
           {/* Right side icons */}
           <nav className="flex items-center gap-5">
-            <Link to="/wishlist" className="relative text-gray-700 hover:text-pink-600 flex items-center gap-1">
+            <Link
+              to="/wishlist"
+              className="relative text-gray-700 hover:text-pink-600 flex items-center gap-1"
+            >
               <FiHeart className="text-xl" />
-              <span className="hidden sm:inline font-medium">Wishlist</span>
+              
               {wishlistCount > 0 && (
                 <span className="absolute -top-2 -right-3 bg-pink-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {wishlistCount}
@@ -74,9 +82,12 @@ export default function Header() {
               )}
             </Link>
 
-            <Link to="/cart" className="relative text-gray-700 hover:text-gray-900 flex items-center gap-1">
+            <Link
+              to="/cart"
+              className="relative text-gray-700 hover:text-gray-900 flex items-center gap-1"
+            >
               <FiShoppingCart className="text-xl" />
-              <span className="hidden sm:inline font-medium">Cart</span>
+              
               {cartCount > 0 && (
                 <span className="absolute -top-2 -right-3 bg-blue-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {cartCount}
@@ -84,11 +95,6 @@ export default function Header() {
               )}
             </Link>
 
-            <button className="text-gray-700 hover:text-gray-900" aria-label="Notifications">
-              <FiBell className="text-xl" />
-            </button>
-
-            {/* 🔥 Fixed: use Link instead of button */}
             <Link
               to="/login"
               className="px-3 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-600"

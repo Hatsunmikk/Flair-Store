@@ -1,10 +1,10 @@
-// src/redux/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import productReducer from "./productSlice";
 import cartReducer from "./cartSlice";
 import wishlistReducer from "./wishlistSlice";
 import authReducer from "./authSlice";
 import searchReducer from "./searchSlice";
+import notificationReducer from "./notificationSlice";
 
 // Load state from localStorage
 const loadState = () => {
@@ -37,17 +37,12 @@ export const store = configureStore({
     wishlist: wishlistReducer,
     auth: authReducer,
     search: searchReducer,
+    notifications: notificationReducer,
   },
   preloadedState: persistedState,
 });
 
 // Subscribe to store updates and save to localStorage
 store.subscribe(() => {
-  saveState({
-    products: store.getState().products,
-    cart: store.getState().cart,
-    wishlist: store.getState().wishlist,
-    auth: store.getState().auth,
-    search: store.getState().search,
-  });
+  saveState(store.getState());
 });
