@@ -1,8 +1,10 @@
+// src/pages/ProductDetails.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
+import { motion } from "framer-motion";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -31,77 +33,75 @@ export default function ProductDetails() {
     fetchProduct();
   }, [id]);
 
-  if (status === "loading") return <p>Loading...</p>;
-  if (status === "failed") return <p style={{ color: "red" }}>{error}</p>;
+  if (status === "loading") return <p className="p-6 text-gray-500">Loading...</p>;
+  if (status === "failed") return <p className="p-6 text-red-500">{error}</p>;
   if (!product) return null;
 
   const inCart = cartItems.some((item) => item.id === product.id);
   const inWishlist = wishlistItems.some((item) => item.id === product.id);
 
   const handleCartToggle = () => {
-    if (inCart) dispatch(removeFromCart(product.id));
-    else dispatch(addToCart(product));
+    inCart ? dispatch(removeFromCart(product.id)) : dispatch(addToCart(product));
   };
 
   const handleWishlistToggle = () => {
-    if (inWishlist) dispatch(removeFromWishlist(product.id));
-    else dispatch(addToWishlist(product));
+    inWishlist
+      ? dispatch(removeFromWishlist(product.id))
+      : dispatch(addToWishlist(product));
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Link to="/" style={{ marginBottom: "20px", display: "inline-block" }}>
+    <div className="max-w-7xl mx-auto px-6 py-10">
+      <Link to="/" className="text-pink-600 hover:underline mb-6 inline-block">
         &larr; Back to Home
       </Link>
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-        <img
-          src={product.image}
-          alt={product.title}
-          style={{ maxWidth: "300px", objectFit: "contain" }}
-        />
-
-        <div style={{ flex: 1, minWidth: "250px" }}>
-          <h2>{product.title}</h2>
-          <p style={{ fontWeight: "bold", fontSize: "1.5rem" }}>${product.price}</p>
-          <p>{product.description}</p>
-          <p><strong>Category:</strong> {product.category}</p>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className="bg-white rounded-xl shadow p-6 grid md:grid-cols-2 gap-8"
+      >
+        <div className="flex items-center justify-center">
+          <img
+            src={product.image}
+            alt={product.title}
+            className="max-h-96 object-contain"
+          />
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">{product.title}</h2>
+          <p className="text-pink-600 font-bold text-xl mt-2">${product.price}</p>
+          <p className="mt-4 text-gray-700">{product.description}</p>
+          <p className="mt-2 text-gray-600">
+            <strong>Category:</strong> {product.category}
+          </p>
           {product.rating && (
-            <p>
+            <p className="mt-1 text-gray-600">
               <strong>Rating:</strong> {product.rating.rate} ({product.rating.count} reviews)
             </p>
           )}
 
-          <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+          <div className="flex flex-wrap gap-4 mt-6">
             <button
               onClick={handleCartToggle}
-              style={{
-                backgroundColor: inCart ? "#f44336" : "#4CAF50",
-                color: "white",
-                border: "none",
-                padding: "10px 15px",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
+              className={`px-5 py-2 rounded-lg text-white font-medium transition-colors ${
+                inCart ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
+              }`}
             >
               {inCart ? "Remove from Cart" : "Add to Cart"}
             </button>
             <button
               onClick={handleWishlistToggle}
-              style={{
-                backgroundColor: inWishlist ? "#f44336" : "#FF4081",
-                color: "white",
-                border: "none",
-                padding: "10px 15px",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
+              className={`px-5 py-2 rounded-lg text-white font-medium transition-colors ${
+                inWishlist ? "bg-red-500 hover:bg-red-600" : "bg-pink-500 hover:bg-pink-600"
+              }`}
             >
               {inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

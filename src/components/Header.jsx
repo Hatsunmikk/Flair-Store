@@ -8,7 +8,9 @@ import { FiSearch, FiBell, FiLogIn, FiHeart, FiShoppingCart, FiX } from "react-i
 export default function Header() {
   const dispatch = useDispatch();
   const cartCount = useSelector((state) => state.cart?.items?.length || 0);
-  const wishlistCount = useSelector((state) => Array.isArray(state.wishlist) ? state.wishlist.length : state.wishlist?.items?.length || 0);
+  const wishlistCount = useSelector((state) =>
+    Array.isArray(state.wishlist) ? state.wishlist.length : state.wishlist?.items?.length || 0
+  );
   const search = useSelector((state) => state.search.term);
 
   const [showSearch, setShowSearch] = useState(false);
@@ -86,11 +88,15 @@ export default function Header() {
               <FiBell className="text-xl" />
             </button>
 
-            <button className="px-3 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-600">
+            {/* 🔥 Fixed: use Link instead of button */}
+            <Link
+              to="/login"
+              className="px-3 py-1.5 rounded-full border border-gray-300 text-gray-700 hover:border-pink-500 hover:text-pink-600"
+            >
               <span className="inline-flex items-center gap-2">
                 <FiLogIn /> Login
               </span>
-            </button>
+            </Link>
           </nav>
         </div>
 
