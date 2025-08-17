@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromWishlist } from "../redux/wishlistSlice";
+import { addToCart } from "../redux/cartSlice";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
@@ -15,6 +16,14 @@ export default function Wishlist() {
     const message = `Removed ${title} from wishlist.`;
     dispatch(addNotification(message));
     toast.info(message);
+  };
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+    dispatch(removeFromWishlist(product.id));
+    const message = `Moved ${product.title} to cart.`;
+    dispatch(addNotification(message));
+    toast.success(message);
   };
 
   if (wishlistItems.length === 0) {
@@ -85,6 +94,24 @@ export default function Wishlist() {
                 </h3>
               </Link>
               <p style={{ fontWeight: "bold" }}>${product.price}</p>
+
+              {/* Add to Cart button */}
+              <button
+                onClick={() => handleAddToCart(product)}
+                style={{
+                  backgroundColor: "#4CAF50",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 15px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  marginRight: "10px",
+                }}
+              >
+                Add to Cart
+              </button>
+
+              {/* Remove button */}
               <button
                 onClick={() => handleRemove(product.id, product.title)}
                 style={{
