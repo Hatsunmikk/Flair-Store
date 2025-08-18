@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/productSlice";
 import { addToCart, removeFromCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // ✅ import navigate
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function Home() {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // ✅
+
   const { items, status, error } = useSelector((state) => state.products);
   const search = useSelector((state) => state.search.term);
   const cartItems = useSelector((state) => state.cart.items);
@@ -42,19 +44,28 @@ export default function Home() {
     return list;
   }, [items, category, search]);
 
-  const handleCartToggle = (product) => {
+  // ✅ Updated handlers
+  const handleCartAction = (product) => {
     const inCart = cartItems.some((item) => item.id === product.id);
-    inCart ? dispatch(removeFromCart(product.id)) : dispatch(addToCart(product));
+    if (inCart) {
+      navigate("/cart"); // go to cart
+    } else {
+      dispatch(addToCart(product));
+    }
   };
 
-  const handleWishlistToggle = (product) => {
+  const handleWishlistAction = (product) => {
     const inWishlist = wishlistItems.some((item) => item.id === product.id);
-    inWishlist ? dispatch(removeFromWishlist(product.id)) : dispatch(addToWishlist(product));
+    if (inWishlist) {
+      navigate("/wishlist"); // go to wishlist
+    } else {
+      dispatch(addToWishlist(product));
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Banner (parallax-like) */}
+      {/* Banner */}
       <section className="relative overflow-hidden">
         <motion.div
           style={{ y, opacity }}
@@ -148,7 +159,7 @@ export default function Home() {
 
                       <div className="flex gap-3 justify-center">
                         <button
-                          onClick={() => handleCartToggle(product)}
+                          onClick={() => handleCartAction(product)}
                           className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
                             inCart ? "bg-green-500 hover:bg-green-600" : "bg-pink-500 hover:bg-pink-600"
                           }`}
@@ -156,7 +167,7 @@ export default function Home() {
                           {inCart ? "Go to Cart" : "Add to Cart"}
                         </button>
                         <button
-                          onClick={() => handleWishlistToggle(product)}
+                          onClick={() => handleWishlistAction(product)}
                           className={`px-4 py-2 rounded-lg text-white text-sm font-medium transition-colors ${
                             inWishlist ? "bg-green-500 hover:bg-green-600" : "bg-pink-500 hover:bg-pink-600"
                           }`}
