@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/authSlice";
@@ -28,8 +27,11 @@ export default function Login() {
 
     setError("");
     dispatch(login({ email }));
-    dispatch(addNotification("Login successful! Welcome back."));
-    toast.success("Login successful!");
+
+    // ✅ Notification on login
+    dispatch(addNotification(`Welcome ${email}!`));
+    toast.success(`Welcome ${email}!`);
+
     navigate("/"); // redirect after login
   };
 
@@ -46,22 +48,24 @@ export default function Login() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="w-full border p-3 rounded mb-4"
+          className="w-full border p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition-colors"
         >
           Login
         </button>
