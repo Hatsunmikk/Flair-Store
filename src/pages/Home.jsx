@@ -2,14 +2,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/productSlice";
-import { addToCart, removeFromCart } from "../redux/cartSlice";
-import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
-import { Link, useNavigate } from "react-router-dom"; // ✅ import navigate
-import { motion, useScroll, useTransform } from "framer-motion";
+import { addToCart } from "../redux/cartSlice";
+import { addToWishlist } from "../redux/wishlistSlice";
+import { Link, useNavigate } from "react-router-dom";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { FaTruck, FaUndo, FaHeadset } from "react-icons/fa";
+import Banner from "../components/Banner";
+import FAQSection from "../components/FAQSection";
+import PrivacyPolicy from "../components/PrivacyPolicy";
+import TermsAndConditions from "../components/TermsAndConditions";
+
 
 export default function Home() {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // ✅
+  const navigate = useNavigate();
 
   const { items, status, error } = useSelector((state) => state.products);
   const search = useSelector((state) => state.search.term);
@@ -17,6 +23,8 @@ export default function Home() {
   const wishlistItems = useSelector((state) => state.wishlist);
 
   const [category, setCategory] = useState("All");
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   useEffect(() => {
     if (status === "idle") {
@@ -24,7 +32,7 @@ export default function Home() {
     }
   }, [dispatch, status]);
 
-  // Parallax values
+  // Parallax banner
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 300], [0, -60]);
   const opacity = useTransform(scrollY, [0, 200], [1, 0.85]);
@@ -44,11 +52,10 @@ export default function Home() {
     return list;
   }, [items, category, search]);
 
-  // ✅ Updated handlers
   const handleCartAction = (product) => {
     const inCart = cartItems.some((item) => item.id === product.id);
     if (inCart) {
-      navigate("/cart"); // go to cart
+      navigate("/cart");
     } else {
       dispatch(addToCart(product));
     }
@@ -57,7 +64,7 @@ export default function Home() {
   const handleWishlistAction = (product) => {
     const inWishlist = wishlistItems.some((item) => item.id === product.id);
     if (inWishlist) {
-      navigate("/wishlist"); // go to wishlist
+      navigate("/wishlist");
     } else {
       dispatch(addToWishlist(product));
     }
@@ -67,26 +74,10 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       {/* Banner */}
       <section className="relative overflow-hidden">
-        <motion.div
-          style={{ y, opacity }}
-          className="relative bg-gradient-to-r from-pink-500 via-fuchsia-500 to-violet-500 text-white"
-        >
-          <div className="max-w-7xl mx-auto px-6 py-20 sm:py-24">
-            <h1 className="text-4xl sm:text-5xl font-extrabold drop-shadow">
-              Discover Your Style at Flair Store
-            </h1>
-            <p className="mt-3 text-white/90 max-w-2xl">
-              Shop electronics, fashion, jewelry and more. Curated picks, great prices, fast checkout.
-            </p>
-            <Link
-              to="#products"
-              className="inline-block mt-6 bg-white text-pink-600 font-semibold px-6 py-2.5 rounded-full hover:bg-pink-50"
-            >
-              Shop Now
-            </Link>
-          </div>
-        </motion.div>
+        <Banner />
       </section>
+
+      
 
       <main className="max-w-7xl mx-auto px-6 py-10" id="products">
         {/* Category Filter */}
@@ -182,6 +173,42 @@ export default function Home() {
             )}
           </>
         )}
+
+        {/* What We Offer */}
+        <section className="mt-16">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">What We Offer</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[
+              { icon: <FaTruck />, title: "Free Shipping", desc: "Get your products delivered at no extra cost." },
+              { icon: <FaUndo />, title: "Free Returns", desc: "Hassle-free returns within 30 days of purchase." },
+              { icon: <FaHeadset />, title: "24/7 Support", desc: "Always here to help you with your queries." },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.05 }}
+                className="p-6 bg-white border rounded-xl shadow text-center"
+              >
+                <div className="text-3xl mb-3 text-pink-600">{item.icon}</div>
+                <h3 className="font-semibold text-lg">{item.title}</h3>
+                <p className="text-gray-600 mt-2">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="mt-16">
+          <FAQSection />
+        </section>
+
+        {/* Privacy & T&C */}
+        <section className="mt-16 flex gap-4">
+          <PrivacyPolicy />
+          <TermsAndConditions />
+          
+        </section>
+
+       
       </main>
     </div>
   );

@@ -87,5 +87,5 @@ export default function Footer() {
         © {new Date().getFullYear()} Flair Store. All rights reserved.
       </div>
     </footer>
-  );
+  );  
 }
