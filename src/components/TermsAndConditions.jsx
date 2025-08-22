@@ -1,20 +1,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const TermsAndConditions = () => {
+export default function TermsAndConditions() {
   const [showTerms, setShowTerms] = useState(false);
 
   return (
     <>
-      {/* Button */}
       <button
         onClick={() => setShowTerms(true)}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+        className="text-sm text-gray-500 hover:underline"
       >
         Terms & Conditions
       </button>
 
-      {/* Modal */}
       <AnimatePresence>
         {showTerms && (
           <motion.div
@@ -22,6 +20,7 @@ const TermsAndConditions = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
+            data-testid="modal-overlay"   // ✅ Added for testing
             onClick={() => setShowTerms(false)}
           >
             <motion.div
@@ -33,14 +32,18 @@ const TermsAndConditions = () => {
             >
               <h3 className="text-lg font-bold mb-2">Terms & Conditions</h3>
               <p className="text-gray-600">
-                By using our website, you agree to abide by our company policies and guidelines.
+                By using this store, you agree to our terms and conditions. Please read carefully.
               </p>
+              <button
+                onClick={() => setShowTerms(false)}
+                className="mt-4 px-3 py-2 bg-gray-200 rounded"
+              >
+                Close
+              </button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
   );
-};
-
-export default TermsAndConditions;
+}

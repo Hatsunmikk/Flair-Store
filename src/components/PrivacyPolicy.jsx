@@ -1,20 +1,18 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const PrivacyPolicy = () => {
+export default function PrivacyPolicy() {
   const [showPrivacy, setShowPrivacy] = useState(false);
 
   return (
     <>
-      {/* Button */}
       <button
         onClick={() => setShowPrivacy(true)}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg"
+        className="text-sm text-gray-500 hover:underline"
       >
         Privacy Policy
       </button>
 
-      {/* Modal */}
       <AnimatePresence>
         {showPrivacy && (
           <motion.div
@@ -35,12 +33,17 @@ const PrivacyPolicy = () => {
               <p className="text-gray-600">
                 We respect your privacy and ensure your personal data is secure with us.
               </p>
+              <button
+                aria-label="Close Privacy Policy"   // ✅ Added accessibility
+                onClick={() => setShowPrivacy(false)}
+                className="mt-4 px-3 py-2 bg-gray-200 rounded"
+              >
+                Close
+              </button>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
   );
-};
-
-export default PrivacyPolicy;
+}

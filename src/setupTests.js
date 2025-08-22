@@ -1,18 +1,22 @@
-// src/setupTests.js
-import '@testing-library/jest-dom';
+import "@testing-library/jest-dom";
+import { TextEncoder, TextDecoder } from "util";
 
-// Smooth over requestAnimationFrame in framer-motion
-if (!global.requestAnimationFrame) {
-  global.requestAnimationFrame = (cb) => setTimeout(cb, 0);
-}
+// Polyfill TextEncoder / TextDecoder
+if (!global.TextEncoder) global.TextEncoder = TextEncoder;
+if (!global.TextDecoder) global.TextDecoder = TextDecoder;
 
-// Mock IntersectionObserver used sometimes by animations
-class MockIntersectionObserver {
-  constructor() {}
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
+// Polyfill IntersectionObserver (used by Framer Motion + animations)
 if (!global.IntersectionObserver) {
-  global.IntersectionObserver = MockIntersectionObserver;
+  global.IntersectionObserver = class {
+    constructor() {}
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}
+
+// Polyfill fetch if missing
+if (!global.fetch) {
+  global.fetch = (...args) =>
+    import("node-fetch").then(({ default: fetch }) => fetch(...args));
 }
