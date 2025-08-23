@@ -8,7 +8,7 @@ export default function PrivacyPolicy() {
     <>
       <button
         onClick={() => setShowPrivacy(true)}
-        className="text-sm text-gray-500 hover:underline"
+        className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-4 py-2 rounded-lg"
       >
         Privacy Policy
       </button>
