@@ -4,10 +4,12 @@ import { useDispatch } from "react-redux";
 import { addNotification } from "../redux/notificationSlice";
 import { toast } from "react-toastify";
 
+
 export default function Footer() {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
 
+  
   const handleSubscribe = (e) => {
     e.preventDefault();
 
@@ -42,10 +44,11 @@ export default function Footer() {
             <li><Link to="/" className="hover:text-pink-600">Home</Link></li>
             <li><Link to="/wishlist" className="hover:text-pink-600">Wishlist</Link></li>
             <li><Link to="/cart" className="hover:text-pink-600">Cart</Link></li>
-            <li><a href="/privacy-policy" className="hover:text-pink-600">Privacy Policy</a></li>
-            <li><a href="/terms" className="hover:text-pink-600">Terms & Conditions</a></li>
+            
           </ul>
         </div>
+
+        
 
         {/* Contact */}
         <div>
