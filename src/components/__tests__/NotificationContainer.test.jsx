@@ -19,6 +19,6 @@ test("auto-hides notifications", () => {
     jest.advanceTimersByTime(3100);
   });
 
-  // Now it should disappear
+  
   expect(screen.queryByText(/hello/i)).not.toBeInTheDocument();
 });

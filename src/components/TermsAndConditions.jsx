@@ -20,7 +20,7 @@ export default function TermsAndConditions() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 flex items-center justify-center bg-black/50 z-50"
-            data-testid="modal-overlay"   // ✅ Added for testing
+            data-testid="modal-overlay"   //Added for testing
             onClick={() => setShowTerms(false)}
           >
             <motion.div

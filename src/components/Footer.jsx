@@ -18,7 +18,7 @@ export default function Footer() {
       return;
     }
 
-    // ✅ Notification on subscribe
+    // Notification on subscribe
     dispatch(addNotification("Thanks for subscribing"));
     toast.success("Thanks for subscribing");
 

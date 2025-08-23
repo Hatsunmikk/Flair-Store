@@ -28,7 +28,7 @@ export default function Login() {
     setError("");
     dispatch(login({ email }));
 
-    // ✅ Notification on login
+    //  Notification on login
     dispatch(addNotification(`Welcome ${email}!`));
     toast.success(`Welcome ${email}!`);
 

@@ -18,7 +18,7 @@ describe("Header", () => {
     const closeBtn = screen.getAllByLabelText(/close search/i)[0];
     fireEvent.click(closeBtn);
 
-    expect(input).not.toBeInTheDocument(); // still in DOM on mobile container, but hidden on desktop; this is ok as a smoke check
+    expect(input).not.toBeInTheDocument(); // still in DOM on mobile container, but hidden on desktop
     //expect(input.closest("div")).toHaveStyle({ opacity: "0" });
   });
 

@@ -4,13 +4,13 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { MemoryRouter } from "react-router-dom";
 
-// Import your slices:
+// Import slices:
 import productsReducer from "./redux/productSlice";
 import cartReducer from "./redux/cartSlice";
 import wishlistReducer from "./redux/wishlistSlice";
 import searchReducer from "./redux/searchSlice";
 import notificationsReducer from "./redux/notificationSlice";
-// If you have authSlice or others, import them here and add them below.
+
 
 export function renderWithProviders(
   ui,

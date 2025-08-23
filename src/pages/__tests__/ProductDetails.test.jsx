@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import ProductDetails from "../ProductDetails";
 import { screen } from "@testing-library/react";
 
-// Mock fetch so we don’t actually call fakestoreapi
+// Mock fetch 
 beforeAll(() => {
   global.fetch = jest.fn(() =>
     Promise.resolve({

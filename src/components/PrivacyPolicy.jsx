@@ -34,7 +34,7 @@ export default function PrivacyPolicy() {
                 We respect your privacy and ensure your personal data is secure with us.
               </p>
               <button
-                aria-label="Close Privacy Policy"   // ✅ Added accessibility
+                aria-label="Close Privacy Policy"   //accessibility
                 onClick={() => setShowPrivacy(false)}
                 className="mt-4 px-3 py-2 bg-gray-200 rounded"
               >

@@ -31,7 +31,7 @@ export default function App() {
     localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
   }, [wishlistItems]);
 
-  // ✅ Notification helpers
+  // Notification helpers
   const handleAddToCart = (product) => {
     setCartItems((prev) => [...prev, product]);
     toast.success(`${product.name} added to Cart 🛒`);

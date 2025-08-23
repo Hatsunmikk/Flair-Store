@@ -4,9 +4,9 @@ import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../redux/cartSlice";
 import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
-import { addNotification } from "../redux/notificationSlice"; // ✅ import notifications
+import { addNotification } from "../redux/notificationSlice"; // import notifications
 import { motion } from "framer-motion";
-import { toast } from "react-toastify"; // ✅ assuming you use react-toastify
+import { toast } from "react-toastify"; 
 
 export default function ProductDetails() {
   const { id } = useParams();
