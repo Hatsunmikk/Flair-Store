@@ -11,9 +11,9 @@ This project demonstrates a full shopping flow — from browsing products to man
 - **Product Details** – View detailed information about each item.
 - **Wishlist** – Save items you like for later.
 - **Shopping Cart** – Add, remove, and update product quantities.
-- **Authentication Ready** – (Optional placeholder for login/signup flow).
+- **Authentication Ready** – Placeholder for login (mock, as of now).
 - **Responsive Design** – Optimized for mobile, tablet, and desktop.
-- **Privacy Policy & Terms Modals** – Integrated into the footer with smooth popups.
+- **Privacy Policy & Terms Modals** – Integrated into the home page with smooth popups.
 
 ---
 
